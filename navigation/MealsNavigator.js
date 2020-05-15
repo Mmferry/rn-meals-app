@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Platform, TouchableNativeFeedbackComponent } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
 import CategoriesScreen from "../screens/CategoriesScreen";
 import CategoryMealsScreen from "../screens/CategoryMealsScreen";
@@ -11,7 +12,10 @@ import Colors from "../constants/Color";
 import FavoritesScreen from "../screens/FavoritesScreen";
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab =
+  Platform.OS === "android"
+    ? createMaterialBottomTabNavigator()
+    : createBottomTabNavigator();
 
 const MealsNavigator = () => {
   return (
@@ -73,13 +77,33 @@ const MealsNavigator = () => {
   );
 };
 
+const FavNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Favorites" component={FavoritesScreen} />
+      <Stack.Screen name="MealDetail" component={MealDetailScreen} />
+    </Stack.Navigator>
+  )
+}
+
+const androidTabBarOptions = {
+  inactiveColor: "gray",
+  activeColor: Colors.accentColor,
+  shifting: true,
+};
+
+const iosTabBarOptions = {
+  activeTintColor: Colors.primaryColor,
+  inactiveTintColor: "gray",
+};
+
 const MealsFavTabNavigator = () => {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: Colors.primaryColor,
-        inactiveTintColor: "gray",
-      }}
+      tabBarOptions={
+        Platform.OS === "android" ? androidTabBarOptions : iosTabBarOptions
+      }
+      barStyle={{ backgroundColor: '#fff' }}
     >
       <Tab.Screen
         name="Meals"
@@ -87,17 +111,17 @@ const MealsFavTabNavigator = () => {
         options={{
           tabBarLabel: "Meals",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-restaurant" color={color} size={size} />
+            <Ionicons name="ios-restaurant" color={color} size={26} />
           ),
         }}
       />
       <Tab.Screen
         name="Favorites"
-        component={FavoritesScreen}
+        component={FavNavigator}
         options={{
           tabBarLabel: "Favorites",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-star" color={color} size={size} />
+            <Ionicons name="ios-star" color={color} size={26} />
           ),
         }}
       />
