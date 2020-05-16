@@ -1,11 +1,11 @@
 import React from "react";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSelector } from "react-redux";
+import { View, Text, StyleSheet } from "react-native";
 
 import MealList from "../components/MealList";
 import HeaderButton from "../components/HeaderButton";
 import Colors from "../constants/Color";
-import { View, Text, StyleSheet } from "react-native";
 
 const FavoritesScreen = (props) => {
   const favMeals = useSelector(state => state.meals.favoriteMeals)
