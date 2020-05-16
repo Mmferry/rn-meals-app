@@ -6,11 +6,30 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 
 import { CATEGORIES } from "../data/dummy-data";
 import CategoryGridTile from "../components/CategoryGridTile";
+import HeaderButton from  "../components/HeaderButton";
+import Colors from "../constants/Color";
 
 const CategoriesScreen = (props) => {
+  props.navigation.setOptions({
+    title: "Categories Meal",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Favorite"
+          iconName="ios-menu"
+          color={Colors.primaryColor}
+          onPress={() => {
+            props.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  });
+
   const renderGridItem = ({ item }) => {
     return (
       <CategoryGridTile 
